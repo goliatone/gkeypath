@@ -39,14 +39,33 @@
 
     var Keypath = {};
 
-    Keypath.VERSION = '0.1.0';
+    Keypath.VERSION = '0.1.1';
 
     Keypath.set = function(target, path, value) {
+        if (!target) return false;
 
+        var keys = key.split('.');
+        key = keys.pop();
+        keys.forEach(function(prop) {
+            if (!target[prop]) target[prop] = {};
+            target = target[prop];
+        });
+
+        target[key] = value;
     };
 
-    Keypath.get = function(target, path, def) {
-
+    Keypath.get = function(target, path, defaultValue) {
+        if (!target || !path) return false;
+        path = path.split('.');
+        var l = path.length,
+            i = 0,
+            p = '';
+        for (; i < l; ++i) {
+            p = path[i];
+            if (target.hasOwnProperty(p)) target = target[p];
+            else return defaultValue;
+        }
+        return target;
     };
 
     return Keypath;
