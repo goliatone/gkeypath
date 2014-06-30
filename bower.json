@@ -1,12 +1,13 @@
 {
   "name": "gkeypath",
   "version": "0.1.1",
-  "main": "./src/gkeypath.js",
+  "main": "./src/keypath.js",
   "ignore": [
     "test/**",
     "examples/**",
     "*.json",
-    "*.js"
+    "*.js",
+    ".*"
   ],
   "dependencies": {
     "requirejs": "~2.1.4"
