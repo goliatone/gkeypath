@@ -39,7 +39,7 @@
 
     var Keypath = {};
 
-    Keypath.VERSION = '0.1.1';
+    Keypath.VERSION = '0.1.2';
 
     Keypath.set = function(target, path, value) {
         if (!target) return false;
