@@ -1,0 +1,11 @@
+{
+  "name": "gkeypath",
+  "version": "0.1.0",
+  "main": "./dist/gkeypath.min.js",
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.4"
+  }
+}
