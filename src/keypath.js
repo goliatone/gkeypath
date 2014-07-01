@@ -39,19 +39,19 @@
 
     var Keypath = {};
 
-    Keypath.VERSION = '0.1.3';
+    Keypath.VERSION = '0.1.4';
 
     Keypath.set = function(target, path, value) {
         if (!target) return false;
 
-        var keys = key.split('.');
-        key = keys.pop();
+        var keys = path.split('.');
+        path = keys.pop();
         keys.forEach(function(prop) {
             if (!target[prop]) target[prop] = {};
             target = target[prop];
         });
 
-        target[key] = value;
+        target[path] = value;
     };
 
     Keypath.get = function(target, path, defaultValue) {
