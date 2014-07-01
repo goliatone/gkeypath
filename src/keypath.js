@@ -40,7 +40,7 @@ define("keypath", function() {
 
     var Keypath = {};
 
-    Keypath.VERSION = '0.1.4';
+    Keypath.VERSION = '0.1.5';
 
     Keypath.set = function(target, path, value) {
         if (!target) return undefined;
