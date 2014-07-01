@@ -7,7 +7,7 @@
  */
 /* jshint strict: false, plusplus: true */
 /*global define: false, require: false, module: false, exports: false */
-(function(root, name, deps, factory) {
+/*(function(root, name, deps, factory) {
     "use strict";
     // Node
     if (typeof deps === 'function') {
@@ -35,14 +35,15 @@
             return mod;
         };
     }
-}(this, "keypath", function() {
+}(this, "keypath", function() {*/
+define("keypath", function() {
 
     var Keypath = {};
 
     Keypath.VERSION = '0.1.4';
 
     Keypath.set = function(target, path, value) {
-        if (!target) return false;
+        if (!target) return undefined;
 
         var keys = path.split('.');
         path = keys.pop();
@@ -52,6 +53,8 @@
         });
 
         target[path] = value;
+
+        return target;
     };
 
     Keypath.get = function(target, path, defaultValue) {
@@ -68,5 +71,10 @@
         return target;
     };
 
+    Keypath.has = function(target, path) {
+        return this.get(target, path, '#$#NFV#$#') !== '#$#NFV#$#';
+    };
+
     return Keypath;
-}));
+})
+// );
