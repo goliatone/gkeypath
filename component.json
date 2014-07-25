@@ -1,6 +1,6 @@
 {
   "name": "gkeypath",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Helper library to get/set keypaths on any object",
   "homepage": "https://github.com/goliatone/gkeypath",
 	"repository": {
