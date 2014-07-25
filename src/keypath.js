@@ -40,10 +40,15 @@ define("keypath", function() {
 
     var Keypath = {};
 
-    Keypath.VERSION = '0.1.5';
+    Keypath.VERSION = '0.1.6';
 
     Keypath.set = function(target, path, value) {
         if (!target) return undefined;
+
+        var _set = function(src, method, val) {
+            if (typeof src[method] === 'function') return src[method].call(src, val);
+            return src[method] = val;
+        };
 
         var keys = path.split('.');
         path = keys.pop();
@@ -52,13 +57,18 @@ define("keypath", function() {
             target = target[prop];
         });
 
-        target[path] = value;
+        _set(target, path, value); //target[path] = value;
 
         return target;
     };
 
     Keypath.get = function(target, path, defaultValue) {
         if (!target || !path) return false;
+
+        var _get = function(value) {
+            return typeof value === 'function' ? value() : value;
+        };
+
         path = path.split('.');
         var l = path.length,
             i = 0,
@@ -66,9 +76,9 @@ define("keypath", function() {
         for (; i < l; ++i) {
             p = path[i];
             if (target.hasOwnProperty(p)) target = target[p];
-            else return defaultValue;
+            else return _get(defaultValue);
         }
-        return target;
+        return _get(target);
     };
 
     Keypath.has = function(target, path) {
