@@ -85,6 +85,30 @@ define("keypath", function() {
         return this.get(target, path, '#$#NFV#$#') !== '#$#NFV#$#';
     };
 
+    Keypath.wrap = function(target, inject){
+        var wrapper = new Wrapper(target);
+        if(!inject) return wrapper;
+        if(typeof inject === 'function') inject(target, wrapper);
+        if(typeof inject === 'string') Keypath.set(target, inject, wrapper);
+        return wrapper;
+    };
+
+    function Wrapper(target){
+        this.target = target;
+    }
+
+    Wrapper.prototype.set = function(path, value){
+        return Keypath.set(this.target, path, value);
+    };
+
+    Wrapper.prototype.get = function(path, defaultValue){
+        return Keypath.get(this.target, path, defaultValue);
+    };
+
+    Wrapper.prototype.has = function(path){
+        return Keypath.has(this.target, path);
+    };
+
     return Keypath;
 })
 // );
