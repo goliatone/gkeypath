@@ -45,11 +45,6 @@ define("keypath", function() {
     Keypath.set = function(target, path, value) {
         if (!target) return undefined;
 
-        var _set = function(src, method, val) {
-            if (typeof src[method] === 'function') return src[method].call(src, val);
-            return src[method] = val;
-        };
-
         var keys = path.split('.');
         path = keys.pop();
         keys.forEach(function(prop) {
@@ -57,17 +52,13 @@ define("keypath", function() {
             target = target[prop];
         });
 
-        _set(target, path, value); //target[path] = value;
+        Keypath._set(target, path, value); //target[path] = value;
 
         return target;
     };
 
     Keypath.get = function(target, path, defaultValue) {
         if (!target || !path) return false;
-
-        var _get = function(value) {
-            return typeof value === 'function' ? value() : value;
-        };
 
         path = path.split('.');
         var l = path.length,
@@ -76,9 +67,9 @@ define("keypath", function() {
         for (; i < l; ++i) {
             p = path[i];
             if (target.hasOwnProperty(p)) target = target[p];
-            else return _get(defaultValue);
+            else return Keypath._get(defaultValue);
         }
-        return _get(target);
+        return Keypath._get(target);
     };
 
     Keypath.has = function(target, path) {
@@ -91,6 +82,15 @@ define("keypath", function() {
         if(typeof inject === 'function') inject(target, wrapper);
         if(typeof inject === 'string') Keypath.set(target, inject, wrapper);
         return wrapper;
+    };
+
+    Keypath._get = function(value) {
+        return typeof value === 'function' ? value() : value;
+    };
+
+    Keypath._set = function(src, method, val) {
+        if (typeof src[method] === 'function') return src[method].call(src, val);
+        return src[method] = val;
     };
 
     function Wrapper(target){
@@ -108,6 +108,8 @@ define("keypath", function() {
     Wrapper.prototype.has = function(path){
         return Keypath.has(this.target, path);
     };
+
+    Keypath.Wrapper = Wrapper;
 
     return Keypath;
 })
