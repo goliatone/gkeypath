@@ -3,6 +3,35 @@ beforeEach:true, sinon:true, spyOn:true , expect:true */
 /* jshint strict: false */
 define(['keypath'], function(Keypath) {
 
+    describe('Keypath', function(){
+        it('should have a "wrap" method', function(){
+            expect(Keypath).toHaveMethods(['wrap']);
+        });
+
+        it('"wrap" should provide a Wrapper instance', function(){
+            var target = {};
+            var wrapper = Keypath.wrap(target);
+            expect(wrapper).toBeInstanceOf(Keypath.Wrapper);
+        });
+
+        it('"wrap" if provided with a keypath should inject wrapper instance using target', function(){
+            var target = {};
+            Keypath.wrap(target, 'path.to.instance');
+            expect(target.path.to.instance).toBeInstanceOf(Keypath.Wrapper);
+        });
+
+        it('"wrap" if provided with an inject function it should get called', function(){
+            var target = {};
+            var callback = sinon.spy();
+
+            var wrapper = Keypath.wrap(target, callback);
+            callback.withArgs(target, wrapper);
+
+            expect(callback).toHaveBeenCalledOnce();
+            expect(callback.withArgs(target, wrapper)).toHaveBeenCalledOnce();
+        });
+    });
+
     describe('Keypath.Wrapper', function() {
 
         var Wrapper = Keypath.Wrapper;
