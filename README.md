@@ -2,7 +2,26 @@
 
 [![Build Status](https://secure.travis-ci.org/goliatone/gkeypath.png)](http://travis-ci.org/goliatone/gkeypath)
 
-Helper library to get/set keypaths on any object
+Helper library to get/set keypaths on any object.
+
+## Documentation
+`Keypath` is defined as a [requirejs][1] module.
+
+## Examples
+
+```javascript
+var Foo = {bar:{baz:'fiz'}};
+console.log(Keypath.get(Foo, 'bar.baz')); //fiz
+console.log(Keypath.get(Foo, 'bar.bar'), 'fuz'); //fuz
+```
+
+```javascript
+var Foo = {bar:{baz:'fiz'}};
+Keypath.wrap(Foo, 'path');
+console.log(Foo.path.get('bar.baz')); //fiz
+console.log(Foo.path.get('bar.bar'), 'fuz'); //fuz
+```
+
 
 ## Getting Started
 Download the [production version][min] or the [development version][max].
@@ -47,12 +66,8 @@ And push it:
 ## Travis
 In order to enable Travis for this specific project, you need to do so on your Travi's [profile](https://travis-ci.org/profile). Look for the entry `goliatone/gkeypath`, activate, and sync.
 
-
-## Documentation
-_(Coming soon)_
-
-## Examples
-_(Coming soon)_
-
 ## Release History
 _(Nothing yet)_
+
+
+[1]: http://requirejs.org
