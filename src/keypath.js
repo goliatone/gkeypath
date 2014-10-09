@@ -40,7 +40,11 @@ define("keypath", function() {
 
     var Keypath = {};
 
-    Keypath.VERSION = '0.1.7';
+    var DEFAULTS = {
+        assertionMessage: 'Assertion failed'
+    };
+
+    Keypath.VERSION = '0.1.8';
 
     Keypath.set = function(target, path, value) {
         if (!target) return undefined;
@@ -76,14 +80,31 @@ define("keypath", function() {
         return this.get(target, path, '#$#NFV#$#') !== '#$#NFV#$#';
     };
 
-    Keypath.wrap = function(target, inject){
+    Keypath.assert = function(target, path, message) {
+        message = message || Keypath.DEFAULTS.assertionMessage;
+        var value = this.get(target, path, message);
+
+        if (value !== message) return value;
+
+        this.onError(message, path);
+
+        return undefined;
+    };
+
+    Keypath.wrap = function(target, inject) {
         var wrapper = new Wrapper(target);
-        if(!inject) return wrapper;
-        if(typeof inject === 'function') inject(target, wrapper);
-        if(typeof inject === 'string') Keypath.set(target, inject, wrapper);
+        if (!inject) return wrapper;
+        if (typeof inject === 'function') inject(target, wrapper);
+        if (typeof inject === 'string') Keypath.set(target, inject, wrapper);
         return wrapper;
     };
 
+
+    Keypath.onError = console.error;
+
+    ///////////////////////////////////////////////////
+    // PRIVATE METHODS
+    ///////////////////////////////////////////////////
     Keypath._get = function(value) {
         return typeof value === 'function' ? value() : value;
     };
@@ -93,19 +114,26 @@ define("keypath", function() {
         return src[method] = val;
     };
 
-    function Wrapper(target){
+    ///////////////////////////////////////////////////
+    // WRAPPER Internal Class
+    ///////////////////////////////////////////////////
+    /**
+     * Wrapper Constructor
+     * @param {Object} target Object to be wrapped
+     */
+    function Wrapper(target) {
         this.target = target;
     }
 
-    Wrapper.prototype.set = function(path, value){
+    Wrapper.prototype.set = function(path, value) {
         return Keypath.set(this.target, path, value);
     };
 
-    Wrapper.prototype.get = function(path, defaultValue){
+    Wrapper.prototype.get = function(path, defaultValue) {
         return Keypath.get(this.target, path, defaultValue);
     };
 
-    Wrapper.prototype.has = function(path){
+    Wrapper.prototype.has = function(path) {
         return Keypath.has(this.target, path);
     };
 
