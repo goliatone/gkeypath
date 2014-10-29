@@ -100,7 +100,7 @@ define("keypath", function() {
     };
 
 
-    Keypath.onError = console.error;
+    Keypath.onError = console.error.bind(console);
 
     ///////////////////////////////////////////////////
     // PRIVATE METHODS
