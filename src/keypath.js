@@ -7,7 +7,7 @@
  */
 /* jshint strict: false, plusplus: true */
 /*global define: false, require: false, module: false, exports: false */
-/*(function(root, name, deps, factory) {
+(function(root, name, deps, factory) {
     "use strict";
     // Node
     if (typeof deps === 'function') {
@@ -35,8 +35,8 @@
             return mod;
         };
     }
-}(this, "keypath", function() {*/
-define("keypath", function() {
+}(this, "keypath", function() {
+
 
     var Keypath = {};
 
@@ -140,5 +140,4 @@ define("keypath", function() {
     Keypath.Wrapper = Wrapper;
 
     return Keypath;
-})
-// );
+}));
