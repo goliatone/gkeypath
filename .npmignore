@@ -2,4 +2,12 @@ node_modules
 dist
 .tmp
 .sass-cache
-app/components
+examples/*
+test/*
+CONTRIBUTIN.md
+Gruntfile.js
+LICENSE-MIT
+bower.json
+component.json
+gkeypath.sublime-project
+karma.conf.js
