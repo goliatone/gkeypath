@@ -35,7 +35,7 @@
             return mod;
         };
     }
-}(this, "keypath", function() {
+}(this, 'keypath', function() {
 
 
     var Keypath = {};
@@ -91,8 +91,8 @@
         return undefined;
     };
 
-    Keypath.wrap = function(target, inject) {
-        var wrapper = new Wrapper(target);
+    Keypath.wrap = function(target, inject, dataPropName) {
+        var wrapper = new Wrapper(target, dataPropName);
         if (!inject) return wrapper;
         if (typeof inject === 'function') inject(target, wrapper);
         if (typeof inject === 'string') Keypath.set(target, inject, wrapper);
@@ -121,20 +121,25 @@
      * Wrapper Constructor
      * @param {Object} target Object to be wrapped
      */
-    function Wrapper(target) {
-        this.target = target;
+
+    function Wrapper(target, prop) {
+        prop = prop || 'target';
+        
+        this[prop]   =
+        this._target = target;
     }
 
+
     Wrapper.prototype.set = function(path, value) {
-        return Keypath.set(this.target, path, value);
+        return Keypath.set(this._target, path, value);
     };
 
     Wrapper.prototype.get = function(path, defaultValue) {
-        return Keypath.get(this.target, path, defaultValue);
+        return Keypath.get(this._target, path, defaultValue);
     };
 
     Wrapper.prototype.has = function(path) {
-        return Keypath.has(this.target, path);
+        return Keypath.has(this._target, path);
     };
 
     Keypath.Wrapper = Wrapper;
