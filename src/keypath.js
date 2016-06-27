@@ -123,21 +123,12 @@
      */
 
     function Wrapper(target, prop) {
-        this._target = target;
-
         prop = prop || 'target';
-        wrapOnce(prop);
+        
+        this[prop]   =
+        this._target = target;
     }
-    var defined = false;
-    function wrapOnce(prop){
-        if(defined) return;
-        defined = true;
-        Object.defineProperty(Wrapper.prototype, prop, {
-            get: function() {
-                return this._target;
-            }
-        });
-    }
+
 
     Wrapper.prototype.set = function(path, value) {
         return Keypath.set(this._target, path, value);
