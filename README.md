@@ -12,16 +12,44 @@ Helper library to get/set keypaths on any object.
 ```javascript
 var Foo = {bar:{baz:'fiz'}};
 console.log(Keypath.get(Foo, 'bar.baz')); //fiz
-console.log(Keypath.get(Foo, 'bar.bar'), 'fuz'); //fuz
+console.log(Foo.path.get('bar.bar')); //undefined
+console.log(Foo.path.get('bar.bar', 'fuz')); //fuz
+```
+
+#### Wrapping
+
+You can wrap your object to get a `get` and `set` functions to access values.
+
+The wrap function has different signatures.
+
+```javascript
+var Foo = {bar:{baz:'fiz'}};
+
+Keypath.wrap(Foo, 'path');
+
+console.log(Foo.path.get('bar.baz')); //fiz
+console.log(Foo.path.get('bar.bar')); //undefined
+console.log(Foo.path.get('bar.bar', 'fuz')); //fuz
 ```
 
 ```javascript
 var Foo = {bar:{baz:'fiz'}};
-Keypath.wrap(Foo, 'path');
-console.log(Foo.path.get('bar.baz')); //fiz
-console.log(Foo.path.get('bar.bar'), 'fuz'); //fuz
+
+Keypath.wrap(Foo, function(target, wrapper){
+    ...
+});
 ```
 
+#### Proxy
+If available, the wrapped object will be also wrapped in an ES6 Proxy object, in which case you can access properties using dot notation instead of having to use the `get`/`set` functions.
+
+```js
+var config = {bar:{baz:'fiz'}};
+
+config = Keypath.wrap(config);
+
+console.log(config.bar.baz) //fiz
+```
 
 ## Getting Started
 Download the [production version][min] or the [development version][max].
