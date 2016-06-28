@@ -90,12 +90,27 @@
 
         return undefined;
     };
-
+    //TODO: we might want to reverse the order, and have a different
+    //signature. target, propName, inject
     Keypath.wrap = function(target, inject, dataPropName) {
         var wrapper = new Wrapper(target, dataPropName);
+
+        if(Proxy) {
+            wrapper = new Proxy(wrapper, {
+                get: function (receiver, prop) {
+                    return receiver._target[prop];
+                },
+                set: function(receiver, prop, value){
+                    receiver[prop] = value;
+                }
+            });
+        }
+
         if (!inject) return wrapper;
+        
         if (typeof inject === 'function') inject(target, wrapper);
         if (typeof inject === 'string') Keypath.set(target, inject, wrapper);
+
         return wrapper;
     };
 
@@ -124,7 +139,6 @@
 
     function Wrapper(target, prop) {
         prop = prop || 'target';
-        
         this[prop]   =
         this._target = target;
     }
