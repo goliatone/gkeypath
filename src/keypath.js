@@ -98,6 +98,11 @@
         if(Proxy) {
             wrapper = new Proxy(wrapper, {
                 get: function (receiver, prop) {
+                    if(typeof receiver[prop] === 'function'){
+                        return function(...args){
+                            return Reflect.apply(receiver[prop], receiver, args);
+                        };
+                    }
                     return receiver._target[prop];
                 },
                 set: function(receiver, prop, value){
