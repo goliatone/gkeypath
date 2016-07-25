@@ -38,6 +38,10 @@
 }(this, 'keypath', function() {
 
 
+    function _isObject(out){
+        return out && out.constructor.name === 'Object';
+    }
+
     var Keypath = {};
 
     var DEFAULTS = {
@@ -103,7 +107,9 @@
                             return Reflect.apply(receiver[prop], receiver, args);
                         };
                     }
-                    return receiver._target[prop];
+                    var out = receiver._target[prop];
+                    if(_isObject(out)) out = new Wrapper(out, dataPropName);
+                    return out;
                 },
                 set: function(receiver, prop, value){
                     receiver[prop] = value;
@@ -118,7 +124,6 @@
 
         return wrapper;
     };
-
 
     Keypath.onError = console.error.bind(console);
 
@@ -146,6 +151,7 @@
         prop = prop || 'target';
         this[prop]   =
         this._target = target;
+        this.dataPropName = prop;
     }
 
 
@@ -154,7 +160,11 @@
     };
 
     Wrapper.prototype.get = function(path, defaultValue) {
-        return Keypath.get(this._target, path, defaultValue);
+        var out = Keypath.get(this._target, path, defaultValue);
+        if(_isObject(out)){
+            out = new Wrapper(out, this.dataPropName);
+        }
+        return out;
     };
 
     Wrapper.prototype.has = function(path) {
