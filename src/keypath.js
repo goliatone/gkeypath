@@ -107,8 +107,10 @@
                             return Reflect.apply(receiver[prop], receiver, args);
                         };
                     }
-                    var out = receiver._target[prop];
-                    if(_isObject(out)) out = new Wrapper(out, dataPropName);
+                    var out = receiver._target[prop] || {};
+
+                    if(_isObject(out)) out = Keypath.wrap(out, inject, dataPropName);
+
                     return out;
                 },
                 set: function(receiver, prop, value){
@@ -148,7 +150,7 @@
      */
 
     function Wrapper(target, prop) {
-        prop = prop || 'target';
+        prop = prop || '_target';
         this[prop]   =
         this._target = target;
         this.dataPropName = prop;
@@ -162,10 +164,17 @@
     Wrapper.prototype.get = function(path, defaultValue) {
         var out = Keypath.get(this._target, path, defaultValue);
         if(_isObject(out)){
-            out = new Wrapper(out, this.dataPropName);
+            return Keypath.wrap(out, null, this.dataPropName);
         }
         return out;
     };
+    // Wrapper.prototype.valueOf = function(){
+    //     return this._target.valueOf();
+    // };
+    //
+    // Wrapper.prototype.toString = function(){
+    //     return JSON.stringify(this._target);
+    // };
 
     Wrapper.prototype.has = function(path) {
         return Keypath.has(this._target, path);
