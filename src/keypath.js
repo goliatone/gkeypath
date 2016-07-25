@@ -103,10 +103,12 @@
                             return Reflect.apply(receiver[prop], receiver, args);
                         };
                     }
-                    return receiver._target[prop];
+                    var out = receiver._target[prop];
+                    if(out === undefined && receiver.hasOwnProperty(prop)) out = receiver[prop];
+                    return out;
                 },
                 set: function(receiver, prop, value){
-                    receiver[prop] = value;
+                    receiver._target[prop] = value;
                 }
             });
         }
