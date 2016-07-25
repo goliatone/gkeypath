@@ -16,6 +16,13 @@ console.log(Foo.path.get('bar.bar')); //undefined
 console.log(Foo.path.get('bar.bar', 'fuz')); //fuz
 ```
 
+The library also provides nested wrapping:
+
+```
+console.log('wrapping', config.bar.get('baz'));
+console.log('nested wrapping', config.get('bar').get('baz'));
+```
+
 #### Wrapping
 
 You can wrap your object to get a `get` and `set` functions to access values.
