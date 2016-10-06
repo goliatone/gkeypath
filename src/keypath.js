@@ -105,6 +105,7 @@
                     }
                     var out = receiver._target[prop];
                     if(out === undefined && receiver.hasOwnProperty(prop)) out = receiver[prop];
+                    if(out === undefined && prop === dataPropName) out = receiver._target;
                     return out;
                 },
                 set: function(receiver, prop, value){
