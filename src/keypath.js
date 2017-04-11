@@ -70,7 +70,7 @@
             p = '';
         for (; i < l; ++i) {
             p = path[i];
-            if (target.hasOwnProperty(p)) target = target[p];
+            if (target[p] !== undefined) target = target[p];
             else return Keypath._get(defaultValue);
         }
         return Keypath._get(target);
