@@ -90,25 +90,42 @@
 
         return undefined;
     };
+
+    /**
+     * 
+     * @param {Object} target Source object
+     * @param {Array} [paths=[]] Path list  
+     * @param {*} defaultValue Default value
+     * @returns {*}
+     */
+    Keypath.oneOf = function(target, paths = [], defaultValue = undefined) {
+        for (let path of paths) {
+            if (this.has(target, path)) {
+                return this.get(target, path);
+            }
+        }
+        return defaultValue;
+    };
+
     //TODO: we might want to reverse the order, and have a different
     //signature. target, propName, inject
     Keypath.wrap = function(target, inject, dataPropName) {
         var wrapper = new Wrapper(target, dataPropName);
 
-        if(Proxy) {
+        if (Proxy) {
             wrapper = new Proxy(wrapper, {
-                get: function (receiver, prop) {
-                    if(typeof receiver[prop] === 'function'){
-                        return function(...args){
+                get: function(receiver, prop) {
+                    if (typeof receiver[prop] === 'function') {
+                        return function(...args) {
                             return Reflect.apply(receiver[prop], receiver, args);
                         };
                     }
                     var out = receiver._target[prop];
-                    if(out === undefined && receiver.hasOwnProperty(prop)) out = receiver[prop];
-                    if(out === undefined && prop === dataPropName) out = receiver._target;
+                    if (out === undefined && receiver.hasOwnProperty(prop)) out = receiver[prop];
+                    if (out === undefined && prop === dataPropName) out = receiver._target;
                     return out;
                 },
-                set: function(receiver, prop, value){
+                set: function(receiver, prop, value) {
                     receiver._target[prop] = value;
                 }
             });
@@ -147,8 +164,7 @@
 
     function Wrapper(target, prop) {
         prop = prop || 'target';
-        this[prop]   =
-        this._target = target;
+        this[prop] = this._target = target;
     }
 
 
