@@ -44,7 +44,7 @@
         assertionMessage: 'Assertion failed'
     };
 
-    Keypath.VERSION = '0.4.1';
+    Keypath.VERSION = '0.8.1';
 
     Keypath.set = function(target, path, value) {
         if (!target) return undefined;

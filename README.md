@@ -41,6 +41,7 @@ Keypath.wrap(Foo, function(target, wrapper){
 ```
 
 #### Proxy
+
 If available, the wrapped object will be also wrapped in an ES6 Proxy object, in which case you can access properties using dot notation instead of having to use the `get`/`set` functions.
 
 ```js
@@ -52,6 +53,7 @@ console.log(config.bar.baz) //fiz
 ```
 
 ## Getting Started
+
 Download the [production version][min] or the [development version][max].
 
 [min]: https://raw.github.com/emiliano/gkeypath/master/dist/gkeypath.min.js
@@ -77,6 +79,7 @@ If you bump versions, remember to update:
 
 
 ## Bower
+
 >Bower is a package manager for the web. It offers a generic, unopinionated solution to the problem of front-end package management, while exposing the package dependency model via an API that can be consumed by a more opinionated build stack. There are no system wide dependencies, no dependencies are shared between different apps, and the dependency tree is flat.
 
 To register gkeypath in the [bower](http://bower.io/) [registry](http://sindresorhus.com/bower-components/):
@@ -92,6 +95,7 @@ And push it:
 
 
 ## Travis
+
 In order to enable Travis for this specific project, you need to do so on your Travi's [profile](https://travis-ci.org/profile). Look for the entry `goliatone/gkeypath`, activate, and sync.
 
 ## Release History
