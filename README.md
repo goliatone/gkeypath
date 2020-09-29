@@ -34,12 +34,12 @@ The wrap function has different signatures.
 ```js
 let foo = { bar: { baz: 'fiz',  buzs: ['fizbuz']} };
 
-KeyPath.wrap(foo, '_keypath_');
+KeyPath.wrap(foo, '$path');
 
-console.log(foo._keypath_.get('bar.baz')); //fiz
-console.log(foo._keypath_.get('bar.bar')); //undefined
-console.log(foo._keypath_.get('bar.baz.buzs[0]')); //fizbuz
-console.log(foo._keypath_.get('bar.bar', 'fuz')); //fuz
+console.log(foo.$path.get('bar.baz')); //fiz
+console.log(foo.$path.get('bar.bar')); //undefined
+console.log(foo.$path.get('bar.baz.buzs[0]')); //fizbuz
+console.log(foo.$path.get('bar.bar', 'fuz')); //fuz
 ```
 
 ```js
