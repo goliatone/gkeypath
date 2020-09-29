@@ -55,6 +55,16 @@
             if (!target[prop]) target[prop] = {};
             target = target[prop];
         });
+        /**
+         * We do not support `...` but we could 
+         * extend to enable array concatenation
+         */
+        if (path.match(/\w+\[(\d+)\]/)) {
+            let [_, name, index] = path.match(/(\w+)\[(\d+)\]/);
+            if (!Array.isArray(target[name])) target[name] = [];
+            target = target[name];
+            path = index;
+        }
 
         Keypath._set(target, path, value); //target[path] = value;
 
@@ -70,6 +80,12 @@
             p = '';
         for (; i < l; ++i) {
             p = path[i];
+            if (p.match(/\w+\[(\d+)\]/)) {
+                let [_, name, index] = p.match(/(\w+)\[(\d+)\]/);
+                target = target[name];
+                if (!target) return defaultValue;
+                p = index;
+            }
             if (target[p] !== undefined) target = target[p];
             else return Keypath._get(defaultValue);
         }
