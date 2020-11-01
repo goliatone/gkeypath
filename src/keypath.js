@@ -46,7 +46,17 @@
 
     Keypath.VERSION = '0.10.1';
 
-    Keypath.set = function(target, path, value) {
+    /**
+     * Set a value in target following keypath.
+     * 
+     * @param {Object} target Source object
+     * @param {String} path Keypath to desired property
+     * @param {Mixed} value Value to be set
+     * @param {Object} options
+     * @param {Object} [options.useGetters=true] 
+     * @returns {Object} Returns target 
+     */
+    Keypath.set = function(target, path, value, o = { useGetters: true }) {
         if (!target) return undefined;
 
         var keys = path.split('.');
@@ -66,7 +76,7 @@
             path = index;
         }
 
-        Keypath._set(target, path, value); //target[path] = value;
+        Keypath._set(target, path, value, o); //target[path] = value;
 
         return target;
     };
@@ -78,9 +88,11 @@
      * @param {Object} target Source object
      * @param {String} path Keypath to desired property
      * @param {Mixed} defaultValue Default value if not matched
+     * @param {Object} options
+     * @param {Object} [options.useGetters=true] 
      * @returns {Mixed} 
      */
-    Keypath.get = function(target, path, defaultValue) {
+    Keypath.get = function(target, path, defaultValue, o = { useGetters: true }) {
         if (!target || !path) return defaultValue;
 
         path = path.split('.');
@@ -96,9 +108,9 @@
                 p = index;
             }
             if (target[p] !== undefined) target = target[p];
-            else return Keypath._get(defaultValue);
+            else return Keypath._get(defaultValue, o);
         }
-        return Keypath._get(target);
+        return Keypath._get(target, o);
     };
 
     Keypath.del = function(source, path) {
@@ -191,17 +203,22 @@
     };
 
 
-    Keypath.onError = console.error.bind(console);
+    Keypath.onError = function() {
+        console.error.call(console, arguments);
+    };
 
     ///////////////////////////////////////////////////
     // PRIVATE METHODS
     ///////////////////////////////////////////////////
-    Keypath._get = function(value) {
+    Keypath._get = function(value, o = { useGetters: true }) {
+        if (o.useGetters === false) return value;
         return typeof value === 'function' ? value() : value;
     };
 
-    Keypath._set = function(src, method, val) {
-        if (typeof src[method] === 'function') return src[method].call(src, val);
+    Keypath._set = function(src, method, val, o = { useGetters: true }) {
+        if (typeof src[method] === 'function' && o.useGetters) {
+            return src[method].call(src, val);
+        }
         return src[method] = val;
     };
 
@@ -219,12 +236,12 @@
     }
 
 
-    Wrapper.prototype.set = function(path, value) {
-        return Keypath.set(this._target, path, value);
+    Wrapper.prototype.set = function(path, value, o = { useGetters: true }) {
+        return Keypath.set(this._target, path, value, o);
     };
 
-    Wrapper.prototype.get = function(path, defaultValue) {
-        return Keypath.get(this._target, path, defaultValue);
+    Wrapper.prototype.get = function(path, defaultValue, o = { useGetters: true }) {
+        return Keypath.get(this._target, path, defaultValue, o);
     };
 
     Wrapper.prototype.has = function(path) {
