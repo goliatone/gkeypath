@@ -126,3 +126,31 @@ test('KeyPath should return defaultValue if oneOf does not match', t => {
 
     t.end();
 });
+
+test('KeyPath should optionally not execute functions', t => {
+
+    const defaultFunction = _ => {};
+
+    let out = { bar: { baz: defaultFunction } };
+    let expected = defaultFunction;
+
+    let result = KeyPath.get(out, 'bar.baz', undefined, { useGetters: false });
+
+    t.equal(result, expected);
+
+    t.end();
+});
+
+test('KeyPath should optionally not execute functions in default value', t => {
+
+    const defaultFunction = _ => {};
+
+    let out = { bar: { baz: 'fiz', fiz: ['buzz', 'light'] } };
+    let expected = defaultFunction;
+
+    let result = KeyPath.get(out, 'bar.XX', defaultFunction, { useGetters: false });
+
+    t.equal(result, expected);
+
+    t.end();
+});
