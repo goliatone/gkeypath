@@ -11,3 +11,14 @@ bower.json
 component.json
 gkeypath.sublime-project
 karma.conf.js
+lib/requirejs/.bower.json
+src/.jshintrc
+.bowerrc
+.editorconfig
+.gitattributes
+.jshintrc
+.travis.yml
+CONTRIBUTING.md
+README.md
+taskfile
+.coverage
