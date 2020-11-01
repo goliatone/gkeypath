@@ -22,3 +22,4 @@ CONTRIBUTING.md
 README.md
 taskfile
 .coverage
+.nyc_output
