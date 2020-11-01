@@ -92,6 +92,30 @@ test('KeyPath should return oneOf ', t => {
     t.end();
 });
 
+test('KeyPath should return defaultValue if either target or path are undefined', t => {
+    let out = { bar: { baz: 'fiz', fiz: ['buzz', 'light'] } };
+
+    let expected = 'default';
+
+    let result = KeyPath.get(out, undefined, expected);
+
+    t.equal(result, expected);
+
+    result = KeyPath.get(out, '', expected);
+
+    t.equal(result, expected);
+
+    result = KeyPath.get(undefined, 'path', expected);
+
+    t.equal(result, expected);
+
+    result = KeyPath.get(undefined, undefined, expected);
+
+    t.equal(result, expected);
+
+    t.end();
+});
+
 test('KeyPath should return defaultValue if oneOf does not match', t => {
     let out = { bar: { baz: 'fiz', fiz: ['buzz', 'light'] } };
     let expected = 'default';
