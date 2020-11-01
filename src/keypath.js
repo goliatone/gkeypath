@@ -81,7 +81,7 @@
      * @returns {Mixed} 
      */
     Keypath.get = function(target, path, defaultValue) {
-        if (!target || !path) return false;
+        if (!target || !path) return defaultValue;
 
         path = path.split('.');
         var l = path.length,
