@@ -6,7 +6,8 @@
   },
   "scripts": {
     "test": "bogota",
-    "dtest": "watch bogota test/"
+    "dtest": "watch bogota test/",
+    "coverage": "nyc npm run test"
   },
   "main": "src/keypath",
   "repository": {
