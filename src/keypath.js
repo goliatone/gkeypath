@@ -44,7 +44,7 @@
         assertionMessage: 'Assertion failed'
     };
 
-    Keypath.VERSION = '0.9.1';
+    Keypath.VERSION = '0.10.1';
 
     Keypath.set = function(target, path, value) {
         if (!target) return undefined;
@@ -71,6 +71,15 @@
         return target;
     };
 
+    /**
+     * Get the value of keypath in a given object. 
+     * If nothing is found then return `defaultValue`.
+     * 
+     * @param {Object} target Source object
+     * @param {String} path Keypath to desired property
+     * @param {Mixed} defaultValue Default value if not matched
+     * @returns {Mixed} 
+     */
     Keypath.get = function(target, path, defaultValue) {
         if (!target || !path) return false;
 
@@ -92,6 +101,28 @@
         return Keypath._get(target);
     };
 
+    Keypath.del = function(source, path) {
+        var target = source;
+        if (!target || !path) return false;
+
+        path = path.split('.');
+
+        var l = path.length,
+            i = 0,
+            p = '';
+
+        for (; i < l; ++i) {
+            p = path[i];
+            if (i === l - 1) {
+                if (Array.isArray(target)) {
+                    target[p] = undefined;
+                } else delete target[p];
+            } else if (target[p] !== undefined) target = target[p];
+        }
+
+        return source;
+    };
+
     Keypath.has = function(target, path) {
         return this.get(target, path, '#$#NFV#$#') !== '#$#NFV#$#';
     };
@@ -108,11 +139,15 @@
     };
 
     /**
+     * Takes an array of keypaths and returns the 
+     * value of the first matched path. If none match
+     * will return `defaultValue`.
      * 
      * @param {Object} target Source object
      * @param {Array} [paths=[]] Path list  
      * @param {*} defaultValue Default value
-     * @returns {*}
+     * 
+     * @returns {Mixed} Matched key or default value.
      */
     Keypath.oneOf = function(target, paths = [], defaultValue = undefined) {
         for (let path of paths) {
