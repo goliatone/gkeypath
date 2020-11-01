@@ -70,6 +70,7 @@ Download the [production version][min] or the [development version][max].
 [max]: https://raw.github.com/emiliano/gkeypath/master/dist/gkeypath.js
 
 ## Development
+
 `npm install && bower install`
 
 If you need to `sudo` the `npm` command, you can try to:
