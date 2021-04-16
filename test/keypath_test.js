@@ -59,6 +59,34 @@ test('KeyPath should set objects ', t => {
     t.end();
 });
 
+
+test.only('KeyPath should set objects ', t => {
+
+    let expected = {
+        user: {
+            id: 1,
+            name: 'test',
+        },
+        device: {
+            type: 'mobile'
+        },
+        os: { version: 14, name: 'ios' }
+    };
+
+    let out = {};
+
+
+    KeyPath.set(out, 'user.id', expected.user.id);
+    KeyPath.set(out, 'user.name', expected.user.name);
+    KeyPath.set(out, 'device.type', expected.device.type);
+    KeyPath.set(out, 'os.name', expected.os.name);
+    KeyPath.set(out, 'os.version', expected.os.version);
+
+    t.deepEquals(out, expected);
+
+    t.end();
+});
+
 test('KeyPath should del values in keypath', t => {
     let out = { bar: { baz: 'fiz', fiz: ['buzz', 'light'] } };
     let expected = { bar: { fiz: ['buzz'] } };
