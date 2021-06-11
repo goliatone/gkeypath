@@ -101,12 +101,19 @@
             p = '';
         for (; i < l; ++i) {
             p = path[i];
+
+            /**
+             * Handle array syntax: e.g. `arrayName.1`
+             */
             if (p.match(/\w+\[(\d+)\]/)) {
                 let [_, name, index] = p.match(/(\w+)\[(\d+)\]/);
                 target = target[name];
                 if (!target) return defaultValue;
                 p = index;
             }
+
+            if (target === null) return Keypath._get(defaultValue, o);
+
             if (target[p] !== undefined) target = target[p];
             else return Keypath._get(defaultValue, o);
         }
