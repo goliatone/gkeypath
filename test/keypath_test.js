@@ -59,8 +59,7 @@ test('KeyPath should set objects ', t => {
     t.end();
 });
 
-
-test.only('KeyPath should set objects ', t => {
+test('KeyPath should set objects ', t => {
 
     let expected = {
         user: {
@@ -120,25 +119,37 @@ test('KeyPath should return oneOf ', t => {
     t.end();
 });
 
+
 test('KeyPath should return defaultValue if either target or path are undefined', t => {
     let out = { bar: { baz: 'fiz', fiz: ['buzz', 'light'] } };
 
     let expected = 'default';
 
     let result = KeyPath.get(out, undefined, expected);
-
     t.equal(result, expected);
 
     result = KeyPath.get(out, '', expected);
+    t.equal(result, expected);
 
+    result = KeyPath.get(out, 'bar.undefined.fiz', expected);
     t.equal(result, expected);
 
     result = KeyPath.get(undefined, 'path', expected);
-
     t.equal(result, expected);
 
     result = KeyPath.get(undefined, undefined, expected);
+    t.equal(result, expected);
 
+    result = KeyPath.get(undefined, 'bar.baz', expected);
+    t.equal(result, expected);
+
+    result = KeyPath.get({}, 'bar.baz', expected);
+    t.equal(result, expected);
+
+    result = KeyPath.get({ bar: null }, 'bar.baz', expected);
+    t.equal(result, expected);
+
+    result = KeyPath.get({ bar: { baz: null } }, 'bar.baz.fiz', expected);
     t.equal(result, expected);
 
     t.end();
