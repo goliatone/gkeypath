@@ -166,6 +166,22 @@ test('KeyPath should return defaultValue if oneOf does not match', t => {
     t.end();
 });
 
+test('KeyPath should set setValue if path does not exist', t => {
+    let out = { existing: true };
+    let value = 'value';
+    let expected = { parent: { property: value }, existing: true };
+
+    let result = KeyPath.ifNotSet(out, 'parent.property', value);
+
+    t.equal(result, value, 'ifNotSet should return setValue');
+    t.deepEquals(out, expected, 'ifNotSet should set setValue');
+
+    result = KeyPath.get(out, 'parent.property');
+    t.equal(result, value, 'get should return setValue');
+
+    t.end();
+});
+
 test('KeyPath should optionally not execute functions', t => {
 
     const defaultFunction = _ => {};
