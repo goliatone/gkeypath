@@ -40,11 +40,11 @@
 
     var Keypath = {};
 
-    var DEFAULTS = {
+    Keypath.DEFAULTS = {
         assertionMessage: 'Assertion failed'
     };
 
-    Keypath.VERSION = '0.11.1';
+    Keypath.VERSION = '0.14.1';
 
     /**
      * Set a value in target following keypath.
