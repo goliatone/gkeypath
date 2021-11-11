@@ -6,13 +6,24 @@ Helper library to get/set keypaths on any object.
 
 ## Documentation
 
-`KeyPath` is defined as a [requirejs][1] module. 
+`KeyPath` is defined as a [requirejs][1] module.
 
 It can  be imported as a `npm` package to be used in Node.js applications:
 
 ```
 $ npm i gkeypath
 ```
+
+## API
+
+* `KeyPath.get`: Get a value in target at given keypath
+* `KeyPath.set`: Set a value in target at given keypath
+* `KeyPath.del`: Delete a value in target at given keypath
+* `KeyPath.has`: Check if target has a property at given keypath.
+* `KeyPath.oneOf`: Get a value in target at array of keypaths
+* `KeyPath.ifNotSet`: If no property at keypath then set. Return value at keypath
+* `KeyPath.assert`: If target does not have keypath call `onError`
+* `KeyPath.onError`: Developer should override with custom assertion handler.
 
 ## Examples
 
