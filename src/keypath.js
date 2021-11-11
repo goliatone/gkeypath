@@ -40,21 +40,21 @@
 
     var Keypath = {};
 
-    var DEFAULTS = {
+    Keypath.DEFAULTS = {
         assertionMessage: 'Assertion failed'
     };
 
-    Keypath.VERSION = '0.11.1';
+    Keypath.VERSION = '0.14.1';
 
     /**
      * Set a value in target following keypath.
-     * 
+     *
      * @param {Object} target Source object
      * @param {String} path Keypath to desired property
      * @param {Mixed} value Value to be set
      * @param {Object} options
-     * @param {Object} [options.useGetters=true] 
-     * @returns {Object} Returns target 
+     * @param {Object} [options.useGetters=true]
+     * @returns {Object} Returns target
      */
     Keypath.set = function(target, path, value, o = { useGetters: true }) {
         if (!target) return undefined;
@@ -66,7 +66,7 @@
             target = target[prop];
         });
         /**
-         * We do not support `...` but we could 
+         * We do not support `...` but we could
          * extend to enable array concatenation
          */
         if (path.match(/\w+\[(\d+)\]/)) {
@@ -82,15 +82,15 @@
     };
 
     /**
-     * Get the value of keypath in a given object. 
+     * Get the value of keypath in a given object.
      * If nothing is found then return `defaultValue`.
-     * 
+     *
      * @param {Object} target Source object
      * @param {String} path Keypath to desired property
      * @param {Mixed} defaultValue Default value if not matched
      * @param {Object} options
-     * @param {Object} [options.useGetters=true] 
-     * @returns {Mixed} 
+     * @param {Object} [options.useGetters=true]
+     * @returns {Mixed}
      */
     Keypath.get = function(target, path, defaultValue, o = { useGetters: true }) {
         if (!target || !path) return defaultValue;
@@ -142,6 +142,14 @@
         return source;
     };
 
+    /**
+     *
+     * Test if `target` has a value at `path`.
+     *
+     * @param {Object} target Source object
+     * @param {String} path Keypath to desired property
+     * @returns {Boolean}
+     */
     Keypath.has = function(target, path) {
         return this.get(target, path, '#$#NFV#$#') !== '#$#NFV#$#';
     };
@@ -158,14 +166,14 @@
     };
 
     /**
-     * Takes an array of keypaths and returns the 
+     * Takes an array of keypaths and returns the
      * value of the first matched path. If none match
      * will return `defaultValue`.
-     * 
+     *
      * @param {Object} target Source object
-     * @param {Array} [paths=[]] Path list  
+     * @param {Array} [paths=[]] Path list
      * @param {*} defaultValue Default value
-     * 
+     *
      * @returns {Mixed} Matched key or default value.
      */
     Keypath.oneOf = function(target, paths = [], defaultValue = undefined) {
@@ -175,6 +183,29 @@
             }
         }
         return defaultValue;
+    };
+
+    /**
+     * Get `target`s value of `path` and if
+     * the property is not set then set to `setValue`.
+     *
+     * Returns either the value of path or `setValue`.
+     *
+     * @param {Object} target Source object
+     * @param {String} path Keypath to desired property
+     * @param {any} setValue Value to be set
+     * @param {Object} o Options
+     * @param {Boolean} [o.useGetters=true] Wether to unwrap functions.
+     * @returns Either the value of path or `setValue`
+     */
+    Keypath.ifNotSet = function(target, path, setValue, o = { useGetters: true }) {
+        if (this.has(target, path)) return this.get(target, path, undefined, o);
+
+        var value = this._get(setValue, o);
+
+        this.set(target, path, value);
+
+        return value;
     };
 
     //TODO: we might want to reverse the order, and have a different
